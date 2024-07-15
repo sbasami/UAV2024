@@ -1,0 +1,245 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:BMI088 IC1
+U 1 1 5E48D804
+P 5800 3050
+F 0 "IC1" V 5619 3000 50  0000 C CNN
+F 1 "BMI088" V 5710 3000 50  0000 C CNN
+F 2 "BMI088" H 7050 3550 50  0001 L CNN
+F 3 "https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BMI088-DS001-13.pdf" H 7050 3450 50  0001 L CNN
+F 4 "Inertial Measurement Unit Digital Output 2.5V/3.3V Automotive" H 7050 3350 50  0001 L CNN "Description"
+F 5 "1.45" H 7050 3250 50  0001 L CNN "Height"
+F 6 "" H 7050 3150 50  0001 L CNN "RS Part Number"
+F 7 "" H 7050 3050 50  0001 L CNN "RS Price/Stock"
+F 8 "Bosch Sensortec" H 7050 2950 50  0001 L CNN "Manufacturer_Name"
+F 9 "BMI088" H 7050 2850 50  0001 L CNN "Manufacturer_Part_Number"
+	1    5800 3050
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR03
+U 1 1 5E490DF0
+P 4300 3250
+F 0 "#PWR03" H 4300 3000 50  0001 C CNN
+F 1 "GND" H 4305 3077 50  0000 C CNN
+F 2 "" H 4300 3250 50  0001 C CNN
+F 3 "" H 4300 3250 50  0001 C CNN
+	1    4300 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR02
+U 1 1 5E491148
+P 4300 2700
+F 0 "#PWR02" H 4300 2550 50  0001 C CNN
+F 1 "+3V3" H 4315 2873 50  0000 C CNN
+F 2 "" H 4300 2700 50  0001 C CNN
+F 3 "" H 4300 2700 50  0001 C CNN
+	1    4300 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 3950 4900 3950
+Wire Wire Line
+	5000 3450 4900 3450
+Wire Wire Line
+	6500 4050 6600 4050
+Wire Wire Line
+	6600 4050 6600 4250
+Wire Wire Line
+	6500 3950 6600 3950
+Wire Wire Line
+	6600 3950 6600 4050
+Connection ~ 6600 4050
+Wire Wire Line
+	6500 3750 6600 3750
+Wire Wire Line
+	6600 3750 6600 3950
+Connection ~ 6600 3950
+Wire Wire Line
+	6500 3550 6600 3550
+Wire Wire Line
+	6600 3550 6600 3750
+Connection ~ 6600 3750
+$Comp
+L power:+3V3 #PWR05
+U 1 1 5E497B8A
+P 7050 2700
+F 0 "#PWR05" H 7050 2550 50  0001 C CNN
+F 1 "+3V3" H 7065 2873 50  0000 C CNN
+F 2 "" H 7050 2700 50  0001 C CNN
+F 3 "" H 7050 2700 50  0001 C CNN
+	1    7050 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 3850 4700 3850
+Wire Wire Line
+	4700 3850 4700 2850
+Wire Wire Line
+	4300 2850 4300 2700
+Wire Wire Line
+	4300 2850 4300 2900
+Connection ~ 4300 2850
+Wire Wire Line
+	4300 3200 4300 3250
+$Comp
+L power:GND #PWR06
+U 1 1 5E49E85E
+P 7050 3250
+F 0 "#PWR06" H 7050 3000 50  0001 C CNN
+F 1 "GND" H 7055 3077 50  0000 C CNN
+F 2 "" H 7050 3250 50  0001 C CNN
+F 3 "" H 7050 3250 50  0001 C CNN
+	1    7050 3250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7050 3200 7050 3250
+Wire Wire Line
+	6850 3650 6850 2850
+Wire Wire Line
+	6850 2850 7050 2850
+Wire Wire Line
+	7050 2850 7050 2900
+Wire Wire Line
+	7050 2700 7050 2850
+$Comp
+L Connector_Generic:Conn_01x04 J2
+U 1 1 5E4A84FC
+P 7750 3750
+F 0 "J2" H 7830 3742 50  0000 L CNN
+F 1 "Conn_01x04" H 7830 3651 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 7750 3750 50  0001 C CNN
+F 3 "~" H 7750 3750 50  0001 C CNN
+	1    7750 3750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4900 3450 4900 3950
+Wire Wire Line
+	5800 4450 4400 4450
+$Comp
+L power:GND #PWR07
+U 1 1 5E4AE4A6
+P 7400 3450
+F 0 "#PWR07" H 7400 3200 50  0001 C CNN
+F 1 "GND" H 7405 3277 50  0000 C CNN
+F 2 "" H 7400 3450 50  0001 C CNN
+F 3 "" H 7400 3450 50  0001 C CNN
+	1    7400 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7400 3450 7550 3450
+Wire Wire Line
+	7550 3450 7550 3650
+Wire Wire Line
+	5000 3550 4800 3550
+Wire Wire Line
+	4800 3550 4800 2800
+Wire Wire Line
+	4800 2800 6750 2800
+Wire Wire Line
+	6750 2800 6750 3750
+Wire Wire Line
+	6750 3750 7550 3750
+Wire Wire Line
+	6500 3850 7550 3850
+Wire Wire Line
+	6500 3650 6850 3650
+$Comp
+L power:GND #PWR04
+U 1 1 5E4B5E6F
+P 6600 4250
+F 0 "#PWR04" H 6600 4000 50  0001 C CNN
+F 1 "GND" H 6605 4077 50  0000 C CNN
+F 2 "" H 6600 4250 50  0001 C CNN
+F 3 "" H 6600 4250 50  0001 C CNN
+	1    6600 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3V3 #PWR01
+U 1 1 5E4AD597
+P 3900 3450
+F 0 "#PWR01" H 3900 3300 50  0001 C CNN
+F 1 "+3V3" H 3915 3623 50  0000 C CNN
+F 2 "" H 3900 3450 50  0001 C CNN
+F 3 "" H 3900 3450 50  0001 C CNN
+	1    3900 3450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 3650 3900 3450
+Wire Wire Line
+	3850 3650 3900 3650
+Wire Wire Line
+	3850 3750 4600 3750
+Wire Wire Line
+	4600 3750 4600 3950
+Wire Wire Line
+	4600 3950 4900 3950
+Connection ~ 4900 3950
+Wire Wire Line
+	3850 3850 4500 3850
+Wire Wire Line
+	4500 3850 4500 4050
+Wire Wire Line
+	4500 4050 5000 4050
+Wire Wire Line
+	3850 3950 4400 3950
+NoConn ~ 7550 3950
+Connection ~ 7050 2850
+$Comp
+L Device:C C1
+U 1 1 5E491C7C
+P 4300 3050
+F 0 "C1" H 4415 3096 50  0000 L CNN
+F 1 "100nF" H 4415 3005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 4338 2900 50  0001 C CNN
+F 3 "~" H 4300 3050 50  0001 C CNN
+	1    4300 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C2
+U 1 1 5E49E864
+P 7050 3050
+F 0 "C2" H 7165 3096 50  0000 L CNN
+F 1 "100nF" H 7165 3005 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 7088 2900 50  0001 C CNN
+F 3 "~" H 7050 3050 50  0001 C CNN
+	1    7050 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 3950 4400 4450
+Wire Wire Line
+	4300 2850 4700 2850
+$Comp
+L Connector_Generic:Conn_01x04 J1
+U 1 1 5E4924D9
+P 3650 3750
+F 0 "J1" H 3568 4067 50  0000 C CNN
+F 1 "Conn_01x04" H 3568 3976 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 3650 3750 50  0001 C CNN
+F 3 "~" H 3650 3750 50  0001 C CNN
+	1    3650 3750
+	-1   0    0    -1  
+$EndComp
+$EndSCHEMATC

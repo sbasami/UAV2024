@@ -1,0 +1,250 @@
+EESchema Schematic File Version 4
+LIBS:UAV2021_ver2-cache
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 2 6
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L SamacSys_Parts:DRV8835DSSR IC?
+U 1 1 60DA1FD7
+P 4450 3350
+AR Path="/60DA1FD7" Ref="IC?"  Part="1" 
+AR Path="/60D9FB91/60DA1FD7" Ref="IC3"  Part="1" 
+AR Path="/60DC4490/60DA1FD7" Ref="IC1"  Part="1" 
+F 0 "IC1" H 5450 3615 50  0000 C CNN
+F 1 "DRV8835DSSR" H 5450 3524 50  0000 C CNN
+F 2 "SamacSys_Parts:DRV8835DSSR" H 6300 3450 50  0001 L CNN
+F 3 "http://uk.rs-online.com/web/p/products/8136485" H 6300 3350 50  0001 L CNN
+F 4 "Motor / Motion / Ignition Controllers & Drivers 1.5A Low Vlt Stepper Motor" H 6300 3250 50  0001 L CNN "Description"
+F 5 "0.8" H 6300 3150 50  0001 L CNN "Height"
+F 6 "8136485" H 6300 3050 50  0001 L CNN "RS Part Number"
+F 7 "http://uk.rs-online.com/web/p/products/8136485" H 6300 2950 50  0001 L CNN "RS Price/Stock"
+F 8 "Texas Instruments" H 6300 2850 50  0001 L CNN "Manufacturer_Name"
+F 9 "DRV8835DSSR" H 6300 2750 50  0001 L CNN "Manufacturer_Part_Number"
+	1    4450 3350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 3850 4350 3850
+Wire Wire Line
+	6450 3750 6550 3750
+Wire Wire Line
+	6450 3850 6550 3850
+Wire Wire Line
+	4350 3850 4350 4250
+Wire Wire Line
+	4450 3950 4450 4150
+$Comp
+L Device:C C10
+U 1 1 60DA2C7C
+P 6750 2800
+AR Path="/60D9FB91/60DA2C7C" Ref="C10"  Part="1" 
+AR Path="/60DC4490/60DA2C7C" Ref="C3"  Part="1" 
+F 0 "C3" H 6865 2846 50  0000 L CNN
+F 1 "0.1u" H 6865 2755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 6788 2650 50  0001 C CNN
+F 3 "~" H 6750 2800 50  0001 C CNN
+	1    6750 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C8
+U 1 1 60DA45DB
+P 3600 2800
+AR Path="/60D9FB91/60DA45DB" Ref="C8"  Part="1" 
+AR Path="/60DC4490/60DA45DB" Ref="C1"  Part="1" 
+F 0 "C1" H 3715 2846 50  0000 L CNN
+F 1 "10u" H 3715 2755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 3638 2650 50  0001 C CNN
+F 3 "~" H 3600 2800 50  0001 C CNN
+	1    3600 2800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 3350 4300 3350
+Wire Wire Line
+	4300 2550 4300 3350
+Connection ~ 4000 2550
+Wire Wire Line
+	3600 2550 3600 2450
+Wire Wire Line
+	4000 2950 4000 3050
+Wire Wire Line
+	4000 2550 4300 2550
+Wire Wire Line
+	4000 2650 4000 2550
+$Comp
+L Device:C C9
+U 1 1 60DA31AF
+P 4000 2800
+AR Path="/60D9FB91/60DA31AF" Ref="C9"  Part="1" 
+AR Path="/60DC4490/60DA31AF" Ref="C2"  Part="1" 
+F 0 "C2" H 4115 2846 50  0000 L CNN
+F 1 "0.1u" H 4115 2755 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0402_1005Metric" H 4038 2650 50  0001 C CNN
+F 3 "~" H 4000 2800 50  0001 C CNN
+	1    4000 2800
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR042
+U 1 1 60DA7539
+P 4000 3050
+AR Path="/60D9FB91/60DA7539" Ref="#PWR042"  Part="1" 
+AR Path="/60DC4490/60DA7539" Ref="#PWR023"  Part="1" 
+F 0 "#PWR023" H 4000 2800 50  0001 C CNN
+F 1 "GND" H 4005 2877 50  0000 C CNN
+F 2 "" H 4000 3050 50  0001 C CNN
+F 3 "" H 4000 3050 50  0001 C CNN
+	1    4000 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+7.5V #PWR039
+U 1 1 60DA7EED
+P 3600 2450
+AR Path="/60D9FB91/60DA7EED" Ref="#PWR039"  Part="1" 
+AR Path="/60DC4490/60DA7EED" Ref="#PWR020"  Part="1" 
+F 0 "#PWR020" H 3600 2300 50  0001 C CNN
+F 1 "+7.5V" H 3615 2623 50  0000 C CNN
+F 2 "" H 3600 2450 50  0001 C CNN
+F 3 "" H 3600 2450 50  0001 C CNN
+	1    3600 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6550 3850 6550 4250
+Wire Wire Line
+	6550 2550 6750 2550
+Wire Wire Line
+	6750 2550 6750 2650
+Wire Wire Line
+	6550 2550 6550 3750
+Wire Wire Line
+	4000 2550 3600 2550
+Wire Wire Line
+	3600 2550 3600 2650
+Wire Wire Line
+	3600 2950 3600 3050
+Connection ~ 3600 2550
+$Comp
+L power:GND #PWR041
+U 1 1 60DAA325
+P 3600 3050
+AR Path="/60D9FB91/60DAA325" Ref="#PWR041"  Part="1" 
+AR Path="/60DC4490/60DAA325" Ref="#PWR022"  Part="1" 
+F 0 "#PWR022" H 3600 2800 50  0001 C CNN
+F 1 "GND" H 3605 2877 50  0000 C CNN
+F 2 "" H 3600 3050 50  0001 C CNN
+F 3 "" H 3600 3050 50  0001 C CNN
+	1    3600 3050
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR043
+U 1 1 60DAA783
+P 6750 3050
+AR Path="/60D9FB91/60DAA783" Ref="#PWR043"  Part="1" 
+AR Path="/60DC4490/60DAA783" Ref="#PWR024"  Part="1" 
+F 0 "#PWR024" H 6750 2800 50  0001 C CNN
+F 1 "GND" H 6755 2877 50  0000 C CNN
+F 2 "" H 6750 3050 50  0001 C CNN
+F 3 "" H 6750 3050 50  0001 C CNN
+	1    6750 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6750 2950 6750 3050
+Wire Wire Line
+	6750 2550 6750 2450
+Connection ~ 6750 2550
+$Comp
+L power:+3.3V #PWR040
+U 1 1 60DAB02D
+P 6750 2450
+AR Path="/60D9FB91/60DAB02D" Ref="#PWR040"  Part="1" 
+AR Path="/60DC4490/60DAB02D" Ref="#PWR021"  Part="1" 
+F 0 "#PWR021" H 6750 2300 50  0001 C CNN
+F 1 "+3.3V" H 6765 2623 50  0000 C CNN
+F 2 "" H 6750 2450 50  0001 C CNN
+F 3 "" H 6750 2450 50  0001 C CNN
+	1    6750 2450
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 4150 6750 4150
+Wire Wire Line
+	6450 3650 7000 3650
+Wire Wire Line
+	6450 3550 7000 3550
+Wire Wire Line
+	6450 3450 7000 3450
+Wire Wire Line
+	6450 3350 7000 3350
+Wire Wire Line
+	4450 3450 3800 3450
+Wire Wire Line
+	4450 3550 3800 3550
+Wire Wire Line
+	4450 3650 3800 3650
+Wire Wire Line
+	4450 3750 3800 3750
+Wire Wire Line
+	6750 4150 6750 3750
+Wire Wire Line
+	6750 3750 7000 3750
+$Comp
+L power:GND #PWR045
+U 1 1 60DB7AA8
+P 6550 4250
+AR Path="/60D9FB91/60DB7AA8" Ref="#PWR045"  Part="1" 
+AR Path="/60DC4490/60DB7AA8" Ref="#PWR026"  Part="1" 
+F 0 "#PWR026" H 6550 4000 50  0001 C CNN
+F 1 "GND" H 6555 4077 50  0000 C CNN
+F 2 "" H 6550 4250 50  0001 C CNN
+F 3 "" H 6550 4250 50  0001 C CNN
+	1    6550 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR044
+U 1 1 60DB8263
+P 4350 4250
+AR Path="/60D9FB91/60DB8263" Ref="#PWR044"  Part="1" 
+AR Path="/60DC4490/60DB8263" Ref="#PWR025"  Part="1" 
+F 0 "#PWR025" H 4350 4000 50  0001 C CNN
+F 1 "GND" H 4355 4077 50  0000 C CNN
+F 2 "" H 4350 4250 50  0001 C CNN
+F 3 "" H 4350 4250 50  0001 C CNN
+	1    4350 4250
+	1    0    0    -1  
+$EndComp
+Text HLabel 3800 3450 0    50   Output ~ 0
+AOUT1
+Text HLabel 3800 3550 0    50   Output ~ 0
+AOUT2
+Text HLabel 3800 3650 0    50   Output ~ 0
+BOUT1
+Text HLabel 3800 3750 0    50   Output ~ 0
+BOUT2
+Text HLabel 7000 3350 2    50   Input ~ 0
+BPHASE
+Text HLabel 7000 3450 2    50   Input ~ 0
+AENBL
+Text HLabel 7000 3550 2    50   Input ~ 0
+APHASE
+Text HLabel 7000 3650 2    50   Input ~ 0
+MODE
+Text HLabel 7000 3750 2    50   Input ~ 0
+BENBL
+$EndSCHEMATC

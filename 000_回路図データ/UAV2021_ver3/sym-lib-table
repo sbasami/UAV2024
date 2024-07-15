@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "UAV2021_ver2-rescue")(type "KiCad")(uri "${KIPRJMOD}/UAV2021_ver2-rescue.kicad_sym")(options "")(descr ""))
+)
