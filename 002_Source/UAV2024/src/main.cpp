@@ -1,21 +1,62 @@
+/* ====================================================================
+ * Include files
+ * ==================================================================== */
+// Arduino標準ライブラリ
 #include <Arduino.h>
+// 自作ライブラリ
+#include "SbusReceiver.h"
 
-// put function declarations here:
-int myFunction(int, int);
+/* ====================================================================
+ * Class declarations
+ * ==================================================================== */
+SbusReceiver  sbus(&Serial1);
+IntervalTimer Timer2;
 
+/* ====================================================================
+ * Prototype declarations
+ * ==================================================================== */
+void task_20ms();
+
+/* ====================================================================
+ * Public functions
+ * ==================================================================== */
 void setup()
 {
-    // put your setup code here, to run once:
-    int result = myFunction(2, 3);
-}
+    /* PCとのシリアル通信 */
+    Serial.begin(115200);
 
+    /* SBUS */
+    sbus.begin();
+
+    /* タイマー割込み */
+    Timer2.priority(200);
+    Timer2.begin(task_20ms, 20000);
+}
+/************************************************************************/
 void loop()
 {
-    // put your main code here, to run repeatedly:
+    /* 受信データの更新 */
+    sbus.update();
 }
-
-// put function definitions here:
-int myFunction(int x, int y)
+/************************************************************************/
+void task_20ms()
 {
-    return x + y;
+    T6L_Command command;
+
+    /* 受信データの取得 */
+    command = sbus.getCommand();
+
+    /* 受信データの表示 */
+    Serial.print(command.aileron);
+    Serial.print("\t");
+    Serial.print(command.elevator);
+    Serial.print("\t");
+    Serial.print(command.knob);
+    Serial.print("\t");
+    Serial.print(command.rudder);
+    Serial.print("\t");
+    Serial.print(command.sw);
+    Serial.print("\t");
+    Serial.print(command.throttle);
+    Serial.print("\n");
 }
