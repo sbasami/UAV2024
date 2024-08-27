@@ -39,7 +39,7 @@ class SbusReceiver : public SbusRx
    private:
     std::vector<int> recvChannel_; /**< Chごとの受信データ */
    public:
-    SbusReceiver(HardwareSerial *bus);
+    explicit SbusReceiver(HardwareSerial *bus);
     void        begin();
     void        update();
     T6L_Command getCommand();
