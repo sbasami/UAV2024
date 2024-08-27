@@ -11,8 +11,8 @@
 // オープンソースライブラリ
 #include "sbus.h"
 
-#define THROTTLE_THRESHOLD (0.2) /**< プロポのスロットル閾値(値の範囲：0~1) */
-#define SWITCH_THRESHOLD   (0.5) /**< プロポのスイッチ閾値(値の範囲：0~1) */
+constexpr float THROTTLE_THRESHOLD = 0.2; /**< プロポのスロットル閾値 */
+constexpr float SWITCH_THRESHOLD   = 0.5; /**< プロポのスイッチ閾値 */
 
 typedef struct T6L_COMMAND
 {
@@ -37,7 +37,18 @@ typedef struct T6L_COMMAND
 class SbusReceiver : public SbusRx
 {
    private:
-    std::vector<int> recvChannel_; /**< Chごとの受信データ */
+    static constexpr int SBUS_RESOLUSION_MAX = 0x07FF; /**< SBUSの分解能(11bit)の最大値 */
+    // ====================================================================
+    // 特記事項
+    // 下記はT6L Sportのデータ格納情報なので他のプロポを使用する場合は異なる場合がある
+    // ====================================================================
+    static constexpr int INDEX_RUDDER   = 0; /**< Rudder情報が格納されている配列Index */
+    static constexpr int INDEX_ELEVATOR = 1; /**< Elevator情報が格納されている配列Index */
+    static constexpr int INDEX_THROTTLE = 2; /**< Throttle情報が格納されている配列Index */
+    static constexpr int INDEX_AILERON  = 3; /**< Aileron情報が格納されている配列Index */
+    static constexpr int INDEX_SWITCH   = 4; /**< Switch情報が格納されている配列Index */
+    static constexpr int INDEX_KNOB     = 5; /**< Knob情報が格納されている配列Index */
+    std::vector<int>     recvChannel_;       /**< Chごとの受信データ */
    public:
     explicit SbusReceiver(HardwareSerial *bus);
     void        begin();

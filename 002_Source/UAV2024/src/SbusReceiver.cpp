@@ -4,29 +4,6 @@
 #include "SbusReceiver.h"
 
 /* ====================================================================
- * constant definitions
- * ==================================================================== */
-#define SBUS_BITRATE_BPS     (100000) /**< SBUSのビットレート[bps] */
-#define SBUS_BUFFERSIZE_BYTE (25)     /**< SBUS受信データのバッファサイズ[byte] */
-#define SBUS_CHANNEL_SIZE    (16)     /**< SBUS受信データのCh数 */
-#define SBUS_START_BYTE      (0x0F)   /**< SBUSのStart byte */
-#define SBUS_RESOLUSION_MAX  (0x07FF) /**< SBUSの分解能(11bit)の最大値 */
-
-#define STATE_RECV_START (1) /**< SBUSを受信している状態 */
-#define STATE_RECV_END   (0) /**< SBUSを受信していない状態 */
-
-// ====================================================================
-// 特記事項
-// 下記はT6L Sportのデータ格納情報なので他のプロポを使用する場合は異なる場合がある
-// ====================================================================
-#define INDEX_RUDDER   (0) /**< Rudder情報が格納されている配列Index */
-#define INDEX_ELEVATOR (1) /**< Elevator情報が格納されている配列Index */
-#define INDEX_THROTTLE (2) /**< Throttle情報が格納されている配列Index */
-#define INDEX_AILERON  (3) /**< Aileron情報が格納されている配列Index */
-#define INDEX_SWITCH   (4) /**< Switch情報が格納されている配列Index */
-#define INDEX_KNOB     (5) /**< Knob情報が格納されている配列Index */
-
-/* ====================================================================
  * Public functions
  * ==================================================================== */
 /**
