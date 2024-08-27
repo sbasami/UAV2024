@@ -9,7 +9,7 @@
 /* ====================================================================
  * Class declarations
  * ==================================================================== */
-SbusReceiver  sbus(&Serial1);
+SbusReceiver  sbus_c(&Serial1);
 IntervalTimer Timer2;
 
 /* ====================================================================
@@ -26,7 +26,7 @@ void setup()
     Serial.begin(115200);
 
     /* SBUS */
-    sbus.begin();
+    sbus_c.begin();
 
     /* タイマー割込み */
     Timer2.priority(200);
@@ -36,7 +36,7 @@ void setup()
 void loop()
 {
     /* 受信データの更新 */
-    sbus.update();
+    sbus_c.update();
 }
 /************************************************************************/
 void task_20ms()
@@ -44,7 +44,7 @@ void task_20ms()
     T6L_Command command;
 
     /* 受信データの取得 */
-    command = sbus.getCommand();
+    command = sbus_c.getCommand();
 
     /* 受信データの表示 */
     Serial.print(command.aileron);
