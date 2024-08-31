@@ -37,7 +37,7 @@ class ServoController
     float batVolt_v_ = 0; /**< バッテリ電圧[V] */
    public:
     ServoController(float control_cycle_s);
-    void  calculateIPD(float ref_angle_rad, float cur_angle_rad, float bat_volt_v);
+    void  calculateIPD(float ref_angle_rad, float act_angle_rad, float bat_volt_v);
     void  resetIntegral();
     float getIPD_V();
     float getIPD_duty();

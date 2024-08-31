@@ -6,36 +6,14 @@
 // 自作ライブラリ
 #include "config.h"
 #include "SbusReceiver.h"
-#include "ServoEncoder.h"
-#include "ServoDriver.h"
-#include "ServoController.h"
+#include "servo.h"
 
 /* ====================================================================
  * Class declarations
  * ==================================================================== */
-SbusReceiver  sbus_c(&Serial1);
+SbusReceiver  sbusReceiver(&Serial1);
 IntervalTimer Timer1;
 IntervalTimer Timer2;
-
-static ServoEncoder servoEncoder[4] =
-    {ServoEncoder(CONFIG_PIN_SERVO1_ENC_A, CONFIG_PIN_SERVO1_ENC_B),
-     ServoEncoder(CONFIG_PIN_SERVO2_ENC_A, CONFIG_PIN_SERVO2_ENC_B),
-     ServoEncoder(CONFIG_PIN_SERVO3_ENC_A, CONFIG_PIN_SERVO3_ENC_B),
-     ServoEncoder(CONFIG_PIN_SERVO4_ENC_A, CONFIG_PIN_SERVO4_ENC_B)};
-
-static ServoDriver servoMotor[4] =
-    {ServoDriver(CONFIG_PIN_SERVO1_PWM, CONFIG_PIN_SERVO1_DIR),
-     ServoDriver(CONFIG_PIN_SERVO2_PWM, CONFIG_PIN_SERVO2_DIR),
-     ServoDriver(CONFIG_PIN_SERVO3_PWM, CONFIG_PIN_SERVO3_DIR),
-     ServoDriver(CONFIG_PIN_SERVO4_PWM, CONFIG_PIN_SERVO4_DIR)};
-
-static ServoController servoController[4] =
-    {ServoController(0.001),
-     ServoController(0.001),
-     ServoController(0.001),
-     ServoController(0.001)};
-
-T6L_Command command;
 
 /* ====================================================================
  * Prototype declarations
@@ -52,12 +30,10 @@ void setup()
     Serial.begin(115200);
 
     /* SBUS */
-    sbus_c.begin();
+    sbusReceiver.begin();
 
-    for (int i = 0; i < 4; i++)
-    {
-        servoMotor[i].begin();
-    }
+    /* Servo */
+    servo_Init();
 
     /* タイマー割込み */
     Timer1.priority(190);
@@ -70,46 +46,45 @@ void setup()
 void loop()
 {
     /* 受信データの更新 */
-    sbus_c.update();
+    sbusReceiver.update();
 }
 /************************************************************************/
-#define SERVO 2
 void task_1ms()
 {
-    // 現在角度の取得
-    for (int i = 0; i < 4; i++)
-    {
-        servoEncoder[i].readSensor();
+    T6L_Command        command;
+    std::vector<float> servo_ref_angle_rad(4);
+    std::vector<float> servo_act_angle_rad(4);
+    std::vector<float> servo_duty_norm(4);
 
-        if (command.sw > SWITCH_THRESHOLD)
+    /* 受信データの取得 */
+    command = sbusReceiver.getCommand();
+
+    /* T6LのSWがONの場合に更新 */
+    if (command.sw > SWITCH_THRESHOLD)
+    {
+        /* T6Lのつまみの値を目標値として使用 */
+        for (int i = 0; i < CONFIG_SERVO_NUM; i++)
         {
-            servoController[i].calculateIPD(command.knob * 360 * 2 * DEG_TO_RAD, servoEncoder[i].getAngle_rad(), 7.4);
-            servoMotor[i].outputPWM(servoController[i].getIPD_duty());
-        }
-        else
-        {
-            servoController[i].calculateIPD(0, servoEncoder[i].getAngle_rad(), 7.4);
-            servoMotor[i].outputPWM(servoController[i].getIPD_duty());
+            servo_ref_angle_rad[i] = command.knob * 360 * DEG_TO_RAD;
         }
     }
 
-    // servoMotor[SERVO].outputPWM(0.1);
+    /* サーボの制御 */
+    servo_act_angle_rad = servo_ReadSensor();
+    servo_duty_norm     = servo_Control(servo_ref_angle_rad, servo_act_angle_rad);
+
+    /* モータへ出力 */
+    servo_Output(servo_duty_norm);
 }
 /************************************************************************/
 void task_20ms()
 {
+    T6L_Command command;
+
     /* 受信データの取得 */
-    command = sbus_c.getCommand();
+    command = sbusReceiver.getCommand();
 
     /* 受信データの表示 */
-    Serial.print(servoEncoder[0].getAngle_deg());
-    Serial.print("\t");
-    Serial.print(servoEncoder[1].getAngle_deg());
-    Serial.print("\t");
-    Serial.print(servoEncoder[2].getAngle_deg());
-    Serial.print("\t");
-    Serial.print(servoEncoder[3].getAngle_deg());
-    Serial.print("\t");
     Serial.print(command.aileron);
     Serial.print("\t");
     Serial.print(command.elevator);

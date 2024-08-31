@@ -18,10 +18,10 @@ ServoController::ServoController(float control_cycle_s)
 /**
  * @brief I-PD制御計算処理
  * @param [in] ref_angle_rad 目標角度[rad]
- * @param [in] cur_angle_rad 現在角度[rad]
+ * @param [in] act_angle_rad 現在角度[rad]
  * @param [in] bat_volt_v モータ電源電圧[V]
  */
-void ServoController::calculateIPD(float ref_angle_rad, float cur_angle_rad, float bat_volt_v)
+void ServoController::calculateIPD(float ref_angle_rad, float act_angle_rad, float bat_volt_v)
 {
     float r;  // 目標値[rad]
     float y;  // 制御対象の出力[rad]
@@ -29,7 +29,7 @@ void ServoController::calculateIPD(float ref_angle_rad, float cur_angle_rad, flo
     float e;  // 偏差[rad]
 
     r = ref_angle_rad;
-    y = cur_angle_rad;
+    y = act_angle_rad;
 
     e = r - y;
     // エンコーダ分解能以下の偏差は0にする
