@@ -29,7 +29,7 @@ class ServoDriver
     int pinPwm_; /**< PWM出力ピン */
     int pinDir_; /**< 回転方向ピン */
    public:
-    ServoDriver(int pin_pwm, int pin_dir);
+    explicit ServoDriver(int pin_pwm, int pin_dir);
     void begin();
     void outputPWM(float duty_norm);
 };

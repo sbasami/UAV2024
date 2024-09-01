@@ -27,9 +27,9 @@ class ServoEncoder
     static constexpr float RESOLUTION_DEG_ = 360.0f / (ENCODER_PULSE_ * GEAR_RATIO_);                           /**< 角度分解能[deg] */
 
     Encoder encoder;
-    float   readData_; /**< エンコーダパルスの読出し値 */
+    float   readData_ = 0; /**< エンコーダパルスの読出し値 */
    public:
-    ServoEncoder(int pin_encA, int pin_encB);
+    explicit ServoEncoder(int pin_encA, int pin_encB);
     void  readSensor();
     void  resetSensor(int reset_value);
     float getAngle_rad();
