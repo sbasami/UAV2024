@@ -7,6 +7,9 @@
 /* --------------------------------------------------------------------
  * Pin allocation
  * -------------------------------------------------------------------- */
+// 姿勢センサ関係
+constexpr int CS_PIN_ACCEL = 10; /**< 加速度センサのSPIのCSピン */
+constexpr int CS_PIN_GYRO  = 9;  /**< ジャイロセンサのSPIのCSピン */
 // サーボモータ関係
 constexpr int CONFIG_PIN_SERVO1_PWM   = 15; /**< サーボモータ1のPWM出力ピン */
 constexpr int CONFIG_PIN_SERVO1_DIR   = 17; /**< サーボモータ1の回転方向ピン */
@@ -37,6 +40,7 @@ constexpr int CONFIG_SERVO_NUM = 4; /**< サーボモータの数 */
  * Cycle setting
  * -------------------------------------------------------------------- */
 // 制御関係
-constexpr float CONFIG_CONTROL_CYCLE_sec = 0.001f; /**< 制御周期[s] */
+constexpr float CONFIG_CONTROL_FREQUENCY_Hz = 1000.0f;                         /**< 制御周波数[Hz] */
+constexpr float CONFIG_CONTROL_CYCLE_sec    = 1 / CONFIG_CONTROL_FREQUENCY_Hz; /**< 制御周期[s] */
 
 #endif /* CONFIG_H */

@@ -7,13 +7,15 @@
 #include "config.h"
 #include "SbusReceiver.h"
 #include "servo.h"
+#include "AttitudeSensor.h"
 
 /* ====================================================================
  * Class declarations
  * ==================================================================== */
-SbusReceiver  sbusReceiver(&Serial1);
-IntervalTimer Timer1;
-IntervalTimer Timer2;
+SbusReceiver   sbusReceiver(&Serial1);
+IntervalTimer  Timer1;
+IntervalTimer  Timer2;
+AttitudeSensor attitudeSensor(SPI, CS_PIN_ACCEL, CS_PIN_GYRO);
 
 /* ====================================================================
  * Prototype declarations
@@ -34,6 +36,9 @@ void setup()
 
     /* Servo */
     servo_Init();
+
+    /* Attitude Sensor */
+    attitudeSensor.begin(CONFIG_CONTROL_FREQUENCY_Hz);
 
     /* タイマー割込み */
     Timer1.priority(190);
@@ -75,6 +80,17 @@ void task_1ms()
 
     /* モータへ出力 */
     servo_Output(servo_duty_norm);
+
+    // 現在姿勢の計算
+    std::vector<float> cur_rpy(3);  // 現在姿勢のオイラー角
+    attitudeSensor.update();
+    cur_rpy = attitudeSensor.getRPY_deg();
+    Serial.print(cur_rpy[0]);
+    Serial.print("\t");
+    Serial.print(cur_rpy[1]);
+    Serial.print("\t");
+    Serial.print(cur_rpy[2]);
+    Serial.print("\n");
 }
 /************************************************************************/
 void task_20ms()
@@ -85,16 +101,16 @@ void task_20ms()
     command = sbusReceiver.getCommand();
 
     /* 受信データの表示 */
-    Serial.print(command.aileron);
-    Serial.print("\t");
-    Serial.print(command.elevator);
-    Serial.print("\t");
-    Serial.print(command.knob);
-    Serial.print("\t");
-    Serial.print(command.rudder);
-    Serial.print("\t");
-    Serial.print(command.sw);
-    Serial.print("\t");
-    Serial.print(command.throttle);
-    Serial.print("\n");
+    // Serial.print(command.aileron);
+    // Serial.print("\t");
+    // Serial.print(command.elevator);
+    // Serial.print("\t");
+    // Serial.print(command.knob);
+    // Serial.print("\t");
+    // Serial.print(command.rudder);
+    // Serial.print("\t");
+    // Serial.print(command.sw);
+    // Serial.print("\t");
+    // Serial.print(command.throttle);
+    // Serial.print("\n");
 }

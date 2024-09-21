@@ -1,2 +1,15 @@
+BMI088
+https://github.com/bolderflight/bmi088-arduino
+
+Madgwick
+https://github.com/arduino-libraries/MadgwickAHRS
+
+Eigen
+https://github.com/mmattamala/Eigen
+※2021/08/16：gitで公開されているファイル内のEigenはバージョンが3.3.5だが、自分で現時点で最新の3.3.9に入れ替えている
+
+Eigen本体
+https://eigen.tuxfamily.org/index.php?title=Main_Page
+
 SBUS
 https://github.com/bolderflight/sbus-arduino
