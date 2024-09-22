@@ -27,11 +27,17 @@ constexpr int CONFIG_PIN_SERVO4_PWM   = 14; /**< サーボモータ4のPWM出力
 constexpr int CONFIG_PIN_SERVO4_DIR   = 16; /**< サーボモータ4の回転方向ピン */
 constexpr int CONFIG_PIN_SERVO4_ENC_A = 4;  /**< サーボモータ4のエンコーダのA相ピン */
 constexpr int CONFIG_PIN_SERVO4_ENC_B = 5;  /**< サーボモータ4のエンコーダのB相ピン */
+// ESC関係
+constexpr int PIN_ESC1_PWM = 23; /**< ESC1のPWM出力ピン */
+constexpr int PIN_ESC2_PWM = 22; /**< ESC2のPWM出力ピン */
+constexpr int PIN_ESC3_PWM = 2;  /**< ESC3のPWM出力ピン */
+constexpr int PIN_ESC4_PWM = 3;  /**< ESC4のPWM出力ピン */
 
 /* --------------------------------------------------------------------
  * Servo setting
  * -------------------------------------------------------------------- */
-constexpr int CONFIG_SERVO_NUM = 4; /**< サーボモータの数 */
+constexpr int CONFIG_SERVO_NUM     = 4; /**< サーボモータの数 */
+constexpr int CONFIG_PROPELLER_NUM = 4; /**< プロペラの数 */
 
 /* --------------------------------------------------------------------
  * Cycle setting

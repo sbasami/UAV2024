@@ -7,6 +7,7 @@
 #include "config.h"
 #include "SbusReceiver.h"
 #include "servo.h"
+#include "thrust.h"
 
 /* ====================================================================
  * Class declarations
@@ -35,6 +36,9 @@ void setup()
     /* Servo */
     servo_Init();
 
+    /* Thrust */
+    thrust_Init();
+
     /* タイマー割込み */
     Timer1.priority(190);
     Timer1.begin(task_1ms, 1000);
@@ -55,6 +59,7 @@ void task_1ms()
     std::vector<float> servo_ref_angle_rad(4);
     std::vector<float> servo_act_angle_rad(4);
     std::vector<float> servo_duty_norm(4);
+    std::vector<float> thrust_duty_norm(4);
 
     /* 受信データの取得 */
     command = sbusReceiver.getCommand();
@@ -73,7 +78,15 @@ void task_1ms()
     servo_act_angle_rad = servo_ReadSensor();
     servo_duty_norm     = servo_Control(servo_ref_angle_rad, servo_act_angle_rad);
 
+    /* T6Lのthrottleの値を出力値として使用 */
+    for (int i = 0; i < CONFIG_PROPELLER_NUM; i++)
+    {
+        thrust_duty_norm[i] = command.throttle;
+    }
+    thrust_duty_norm = thrust_Control(thrust_duty_norm, command);
+
     /* モータへ出力 */
+    thrust_Output(thrust_duty_norm);
     servo_Output(servo_duty_norm);
 }
 /************************************************************************/
