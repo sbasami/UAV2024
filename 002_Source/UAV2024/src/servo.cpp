@@ -52,6 +52,10 @@ void servo_Init()
     {
         servoMotor[i].begin();
     }
+
+    /*  このモータだけ回路的に配線が反転しているので回転方向を変更
+        IPD制御を実装済みで回転方向を変更する場合、エンコーダピンのA相B相の定義も同時に変更しないと暴走するので注意 */
+    servoMotor[1].SetRotationDirection(1);
 }
 
 /**

@@ -18,8 +18,8 @@ constexpr int CONFIG_PIN_SERVO1_ENC_B = 21; /**< サーボモータ1のエンコ
 
 constexpr int CONFIG_PIN_SERVO2_PWM   = 28; /**< サーボモータ2のPWM出力ピン */
 constexpr int CONFIG_PIN_SERVO2_DIR   = 31; /**< サーボモータ2の回転方向ピン */
-constexpr int CONFIG_PIN_SERVO2_ENC_A = 38; /**< サーボモータ2のエンコーダのA相ピン */
-constexpr int CONFIG_PIN_SERVO2_ENC_B = 39; /**< サーボモータ2のエンコーダのB相ピン */
+constexpr int CONFIG_PIN_SERVO2_ENC_A = 39; /**< サーボモータ2のエンコーダのA相ピン */
+constexpr int CONFIG_PIN_SERVO2_ENC_B = 38; /**< サーボモータ2のエンコーダのB相ピン */
 
 constexpr int CONFIG_PIN_SERVO3_PWM   = 29; /**< サーボモータ3のPWM出力ピン */
 constexpr int CONFIG_PIN_SERVO3_DIR   = 30; /**< サーボモータ3の回転方向ピン */

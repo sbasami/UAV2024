@@ -26,10 +26,13 @@ class ServoDriver
     static constexpr int   PWM_RESOLUTION_     = 12;                   /**< PWM分解能[bit] */
     static constexpr int   PWM_RESOLUTION_MAX_ = 1 << PWM_RESOLUTION_; /**< PWM分解能最大値 */
 
-    int pinPwm_; /**< PWM出力ピン */
-    int pinDir_; /**< 回転方向ピン */
+    int pinPwm_;                 /**< PWM出力ピン */
+    int pinDir_;                 /**< 回転方向ピン */
+    int rotation_direction_ = 0; /**< 回転方向 */
+
    public:
     explicit ServoDriver(int pin_pwm, int pin_dir);
+    void SetRotationDirection(int rotation_direction);
     void begin();
     void outputPWM(float duty_norm);
 };

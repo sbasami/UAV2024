@@ -18,6 +18,11 @@ ServoDriver::ServoDriver(int pin_pwm, int pin_dir)
     pinDir_ = pin_dir;
 }
 
+void ServoDriver::SetRotationDirection(int rotation_direction)
+{
+    rotation_direction_ = rotation_direction;
+}
+
 /**
  * @brief 初期化関数
  * @attention
@@ -50,6 +55,12 @@ void ServoDriver::outputPWM(float duty_norm)
 
     // Duty比[-1 ~ 1] → Duty比[PWM分解能]への変換
     pwm_val = (int)(duty_norm * (float)(PWM_RESOLUTION_MAX_));
+
+    /* 回転方向の変更 */
+    if (rotation_direction_ != 0)
+    {
+        pwm_val = -pwm_val;
+    }
 
     // 出力制限(上限、下限のチェック)
     if (pwm_val > PWM_RESOLUTION_MAX_)
