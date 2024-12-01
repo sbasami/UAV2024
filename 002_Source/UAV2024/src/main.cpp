@@ -6,9 +6,9 @@
 // 自作ライブラリ
 #include "config.h"
 #include "SbusReceiver.h"
+#include "drone.h"
 #include "servo.h"
 #include "thrust.h"
-#include "AttitudeSensor.h"
 
 /* ====================================================================
  * Class declarations
@@ -16,8 +16,6 @@
 SbusReceiver  sbusReceiver(&Serial1);
 IntervalTimer Timer1;
 IntervalTimer Timer2;
-
-AttitudeSensor attitudeSensor(SPI, CS_PIN_ACCEL, CS_PIN_GYRO);
 
 /* ====================================================================
  * Prototype declarations
@@ -36,21 +34,21 @@ void setup()
     /* SBUS */
     sbusReceiver.begin();
 
+    /* drone */
+    drone_Init();
+
     /* Servo */
     servo_Init();
 
     /* Thrust */
     thrust_Init();
 
-    /* Attitude Sensor */
-    attitudeSensor.begin(CONFIG_CONTROL_FREQUENCY_Hz);
-
     /* タイマー割込み */
     Timer1.priority(190);
-    Timer1.begin(task_1ms, 1000);
+    Timer1.begin(task_1ms, CONFIG_CONTROL_CYCLE_sec * CONFIG_S_TO_US);
 
     Timer2.priority(200);
-    Timer2.begin(task_20ms, 20000);
+    Timer2.begin(task_20ms, CONFIG_POSITION_CONTROL_PERIOD_sec * CONFIG_S_TO_US);
 }
 /************************************************************************/
 void loop()
@@ -62,59 +60,58 @@ void loop()
 void task_1ms()
 {
     T6L_Command        command;
-    std::vector<float> servo_ref_angle_rad(4);
-    std::vector<float> servo_act_angle_rad(4);
-    std::vector<float> servo_duty_norm(4);
-    std::vector<float> thrust_duty_norm(4);
+    std::vector<float> ref_servo(4);
+    std::vector<float> cur_servo(4);
+    std::vector<float> duty_servo(4);
+    std::vector<float> ref_thrust(4);
+    std::vector<float> duty_thrust(4);
 
-    /* 受信データの取得 */
+    // 指令値の取得
     command = sbusReceiver.getCommand();
 
-    /* T6LのSWがONの場合に更新 */
-    if (command.sw > SWITCH_THRESHOLD)
-    {
-        /* T6Lのつまみの値を目標値として使用 */
-        for (int i = 0; i < CONFIG_SERVO_NUM; i++)
-        {
-            servo_ref_angle_rad[i] = command.knob * 360 * DEG_TO_RAD;
-        }
-    }
+    // 機体の制御
+    drone_Control(command);
+    ref_thrust = drone_getThrust();
+    ref_servo  = drone_getServoAngle();
 
-    /* サーボの制御 */
-    servo_act_angle_rad = servo_ReadSensor();
-    servo_duty_norm     = servo_Control(servo_ref_angle_rad, servo_act_angle_rad);
+    // 推力の制御
+    duty_thrust = thrust_Control(ref_thrust, command);
 
-    /* T6Lのthrottleの値を出力値として使用 */
-    for (int i = 0; i < CONFIG_PROPELLER_NUM; i++)
-    {
-        thrust_duty_norm[i] = command.throttle;
-    }
-    thrust_duty_norm = thrust_Control(thrust_duty_norm, command);
+    // サーボの制御
+    cur_servo  = servo_ReadSensor();
+    duty_servo = servo_Control(ref_servo, cur_servo);
 
-    /* モータへ出力 */
-    thrust_Output(thrust_duty_norm);
-    servo_Output(servo_duty_norm);
+    // モータへ出力
+    thrust_Output(duty_thrust);
+    servo_Output(duty_servo);
 
-    // 現在姿勢の計算
-    std::vector<float> cur_rpy(3);  // 現在姿勢のオイラー角
-    attitudeSensor.update();
-    cur_rpy = attitudeSensor.getRPY_deg();
-    Serial.print(cur_rpy[0]);
-    Serial.print("\t");
-    Serial.print(cur_rpy[1]);
-    Serial.print("\t");
-    Serial.print(cur_rpy[2]);
-    Serial.print("\n");
+    // for debug
+    // Serial.print(ref_servo[0] * RAD_TO_DEG);
+    // Serial.print("\t");
+    // Serial.print(ref_servo[1] * RAD_TO_DEG);
+    // Serial.print("\t");
+    // Serial.print(ref_servo[2] * RAD_TO_DEG);
+    // Serial.print("\t");
+    // Serial.print(ref_servo[3] * RAD_TO_DEG);
+    // Serial.print("\t");
+
+    // Serial.print(duty_servo[0]);
+    // Serial.print("\t");
+    // Serial.print(duty_servo[1]);
+    // Serial.print("\t");
+    // Serial.print(duty_servo[2]);
+    // Serial.print("\t");
+    // Serial.print(duty_servo[3]);
+    // Serial.print("\n");
 }
 /************************************************************************/
 void task_20ms()
 {
-    T6L_Command command;
+    // for debug
+    // T6L_Command command;
 
-    /* 受信データの取得 */
-    command = sbusReceiver.getCommand();
+    // command = sbusReceiver.getCommand();
 
-    /* 受信データの表示 */
     // Serial.print(command.aileron);
     // Serial.print("\t");
     // Serial.print(command.elevator);

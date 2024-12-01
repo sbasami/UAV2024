@@ -46,7 +46,11 @@ constexpr int CONFIG_PROPELLER_NUM = 4; /**< プロペラの数 */
  * Cycle setting
  * -------------------------------------------------------------------- */
 // 制御関係
-constexpr float CONFIG_CONTROL_FREQUENCY_Hz = 1000.0f;                         /**< 制御周波数[Hz] */
-constexpr float CONFIG_CONTROL_CYCLE_sec    = 1 / CONFIG_CONTROL_FREQUENCY_Hz; /**< 制御周期[s] */
+constexpr float CONFIG_CONTROL_FREQUENCY_Hz          = 1000.0f;                                  /**< 制御周波数[Hz] */
+constexpr float CONFIG_CONTROL_CYCLE_sec             = 1 / CONFIG_CONTROL_FREQUENCY_Hz;          /**< 制御周期[s] */
+constexpr float CONFIG_POSITION_CONTROL_FREQUENCY_Hz = 50;                                       /**< 位置制御周波数[Hz] */
+constexpr float CONFIG_POSITION_CONTROL_PERIOD_sec   = 1 / CONFIG_POSITION_CONTROL_FREQUENCY_Hz; /**< 位置制御周期[s] */
+
+constexpr float CONFIG_S_TO_US = 1000000; /**< [s] → [us]変換 */
 
 #endif /* CONFIG_H */
