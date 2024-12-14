@@ -46,6 +46,7 @@ class AttitudePlanner
     std::vector<float> getRefRPY_rad();
     std::vector<float> getRefRPY_deg();
     Eigen::Matrix3f    getRefRotMatrix();
+    Eigen::Matrix3f    getRefRotMatrixWithoutOffset();
 };
 
 #endif /* ATTITUDEPLANNER_H */

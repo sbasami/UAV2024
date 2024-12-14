@@ -19,12 +19,21 @@ PositionController::PositionController(float control_cycle)
  * @brief FF制御計算関数
  * @param [in] command プロポからの指令値
  */
-void PositionController::calculateFF(T6L_Command command)
+void PositionController::calculateFF(T6L_Command command, Eigen::Matrix3f R_ref)
 {
+    Eigen::Vector3f Fw;  // 地球座標系
+    Eigen::Vector3f Fb;  // 機体座標系
+
     // プロポの信号を正規化したものを位置の制御出力とする
-    retFF_[0] = command.elevator * (FORCE_X_MAX_ - FORCE_X_MIN_) + FORCE_X_MIN_;
-    retFF_[1] = command.aileron * (FORCE_Y_MAX_ - FORCE_Y_MIN_) + FORCE_Y_MIN_;
-    retFF_[2] = command.throttle * (FORCE_Z_MAX_ - FORCE_Z_MIN_) + FORCE_Z_MIN_;
+    Fw(0) = command.elevator * (FORCE_X_MAX_ - FORCE_X_MIN_) + FORCE_X_MIN_;
+    Fw(1) = command.aileron * (FORCE_Y_MAX_ - FORCE_Y_MIN_) + FORCE_Y_MIN_;
+    Fw(2) = command.throttle * (FORCE_Z_MAX_ - FORCE_Z_MIN_) + FORCE_Z_MIN_;
+
+    Fb = R_ref.transpose() * Fw;
+
+    retFF_[0] = Fb(0);
+    retFF_[1] = Fb(1);
+    retFF_[2] = Fb(2);
 }
 
 /**

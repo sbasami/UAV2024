@@ -115,3 +115,24 @@ Eigen::Matrix3f AttitudePlanner::getRefRotMatrix()
 
     return R;
 }
+
+/**
+ * @brief 目標姿勢回転行列(オフセットなし)取得処理
+ * @return 目標姿勢の回転行列(オフセットなし)
+ */
+Eigen::Matrix3f AttitudePlanner::getRefRotMatrixWithoutOffset()
+{
+    Eigen::Matrix3f    R;
+    std::vector<float> ref_rpy_rad(3);
+
+    ref_rpy_rad[0] = (refRPY_deg_[0] - ref_offset_deg_[0]) * DEG_TO_RAD;
+    ref_rpy_rad[1] = (refRPY_deg_[1] - ref_offset_deg_[1]) * DEG_TO_RAD;
+    ref_rpy_rad[2] = (refRPY_deg_[2] - ref_offset_deg_[2]) * DEG_TO_RAD;
+
+    // 目標角度から回転行列を作成
+    R = Eigen::AngleAxisf(ref_rpy_rad[0], Eigen::Vector3f::UnitX()) *
+        Eigen::AngleAxisf(ref_rpy_rad[1], Eigen::Vector3f::UnitY()) *
+        Eigen::AngleAxisf(ref_rpy_rad[2], Eigen::Vector3f::UnitZ());
+
+    return R;
+}

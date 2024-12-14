@@ -44,11 +44,12 @@ void drone_Init()
  */
 void drone_Control(T6L_Command command)
 {
-    Eigen::Matrix3f    cur_R;          // 現在姿勢の回転行列
-    Eigen::Matrix3f    ref_R;          // 目標姿勢の回転行列
-    std::vector<float> cur_rpy(3);     // 現在姿勢のオイラー角
-    std::vector<float> F_attitude(3);  // 機体の姿勢操作量
-    std::vector<float> F_position(3);  // 機体の位置操作量
+    Eigen::Matrix3f    cur_R;                 // 現在姿勢の回転行列
+    Eigen::Matrix3f    ref_R;                 // 目標姿勢の回転行列
+    Eigen::Matrix3f    ref_R_without_offset;  // 目標姿勢の回転行列(オフセットなし)
+    std::vector<float> cur_rpy(3);            // 現在姿勢のオイラー角
+    std::vector<float> F_attitude(3);         // 機体の姿勢操作量
+    std::vector<float> F_position(3);         // 機体の位置操作量
 
     // 現在姿勢の計算
     attitudeSensor.update();
@@ -57,14 +58,15 @@ void drone_Control(T6L_Command command)
 
     // 目標姿勢の計算
     attitudePlanner.calculateRefAttitude(command, cur_rpy);
-    ref_R = attitudePlanner.getRefRotMatrix();
+    ref_R                = attitudePlanner.getRefRotMatrix();
+    ref_R_without_offset = attitudePlanner.getRefRotMatrixWithoutOffset();
 
     // 姿勢制御
     attitudeController.calculatePID(ref_R, cur_R);
     F_attitude = attitudeController.getPID();
 
     // 位置制御
-    positionController.calculateFF(command);
+    positionController.calculateFF(command, ref_R_without_offset);
     F_position = positionController.getFF();
 
     // 操作量の分配

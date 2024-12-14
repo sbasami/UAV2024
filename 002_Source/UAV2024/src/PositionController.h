@@ -44,7 +44,7 @@ class PositionController
 
    public:
     PositionController(float control_cycle);
-    void               calculateFF(T6L_Command command);
+    void               calculateFF(T6L_Command command, Eigen::Matrix3f R_ref);
     void               calculatePID(std::vector<float> ref_xyz_m, std::vector<float> cur_xyz_m);
     std::vector<float> getFF();
     std::vector<float> getPID();
