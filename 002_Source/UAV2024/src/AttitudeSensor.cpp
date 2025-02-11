@@ -30,8 +30,13 @@ void AttitudeSensor::begin(float sample_frequency_Hz)
     status = accel_.begin();
     if (status < 0)
     {
-        Serial.println("Accel Initialization Error");
-        Serial.println(status);
+        /* 原因不明だが加速度センサの初期化が失敗(CHIP IDを正常に読み出せていない)することがあるのでリトライ処理を設ける */
+        status = accel_.begin();
+        if (status < 0)
+        {
+            Serial.println("Accel Initialization Error");
+            Serial.println(status);
+        }
     }
     status = gyro_.begin();
     if (status < 0)
