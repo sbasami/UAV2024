@@ -41,10 +41,10 @@ void Distributor::calculateThrustAndServoAngle(std::vector<float> F_attitude_N, 
     Tv[3] = F_z_4 - F_roll_4 + F_pitch_4;
 
     // プロペラ座標系水平方向の分配
-    Th[0] = -F_x_4 / sin(PI / 4) + F_y_4 / sin(PI / 4) - F_yaw_4;
-    Th[1] = F_x_4 / sin(PI / 4) + F_y_4 / sin(PI / 4) - F_yaw_4;
-    Th[2] = F_x_4 / sin(PI / 4) - F_y_4 / sin(PI / 4) - F_yaw_4;
-    Th[3] = -F_x_4 / sin(PI / 4) - F_y_4 / sin(PI / 4) - F_yaw_4;
+    Th[0] = -F_x_4 / sin(PI / 4) - F_y_4 / sin(PI / 4) - F_yaw_4;
+    Th[1] = F_x_4 / sin(PI / 4) - F_y_4 / sin(PI / 4) - F_yaw_4;
+    Th[2] = F_x_4 / sin(PI / 4) + F_y_4 / sin(PI / 4) - F_yaw_4;
+    Th[3] = -F_x_4 / sin(PI / 4) + F_y_4 / sin(PI / 4) - F_yaw_4;
 
     // 推力の計算[N]
     thrust_[0] = sqrt(Tv[0] * Tv[0] + Th[0] * Th[0]);
