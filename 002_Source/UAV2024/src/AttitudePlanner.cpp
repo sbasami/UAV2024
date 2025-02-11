@@ -11,7 +11,7 @@
  */
 AttitudePlanner::AttitudePlanner()
 {
-    // Do nothing
+    step_ = calculate_step(0, 30, 1000, 5);
 }
 
 /**
@@ -40,7 +40,11 @@ void AttitudePlanner::calculateRefAttitude(T6L_Command command, std::vector<floa
     // スイッチが閾値を超えていた場合はチルト飛行のために目標roll姿勢を更新
     if (command.sw > SWITCH_THRESHOLD)
     {
-        ref_roll = ref_roll + 15;
+        ref_roll = update_angle(refRPY_deg_[0], 30, step_);
+    }
+    else
+    {
+        ref_roll = update_angle(refRPY_deg_[0], ref_offset_deg_[0], step_);
     }
 
     // プロポから送信される値はAD値なので操作していなくても値が僅かにブレて意図せず加算される可能性がある
@@ -135,4 +139,55 @@ Eigen::Matrix3f AttitudePlanner::getRefRotMatrixWithoutOffset()
         Eigen::AngleAxisf(ref_rpy_rad[2], Eigen::Vector3f::UnitZ());
 
     return R;
+}
+
+// 角度を目標に向けてランプ状に更新する関数
+// 引数:
+//  current_angle_deg: 現在の角度
+//  target_angle_deg : 目標とする角度
+//  step         : 1周期で変化させる角度量
+// 戻り値:
+//  更新後の角度
+float AttitudePlanner::update_angle(float current_angle_deg, float target_angle_deg, float step)
+{
+    float diff = target_angle_deg - current_angle_deg;
+
+    // 角度を増減する
+    if (diff > 0)
+    {
+        // 現在角度が目標より小さいので増加させる
+        current_angle_deg += step;
+        // 超えた場合は補正
+        if (current_angle_deg > target_angle_deg)
+        {
+            current_angle_deg = target_angle_deg;
+        }
+    }
+    else
+    {
+        // 現在角度が目標より大きいので減少させる
+        current_angle_deg -= step;
+        // 下回った場合は補正
+        if (current_angle_deg < target_angle_deg)
+        {
+            current_angle_deg = target_angle_deg;
+        }
+    }
+
+    return current_angle_deg;
+}
+
+// stepを決定する関数
+// 引数：
+//   current_angle: 現在角度
+//   target_angle : 目標角度
+//   update_frequency: 1秒あたりの更新回数(Hz)
+//   transition_time : 遷移時間(秒)
+// 戻り値：
+//   1回の更新あたりに変化させる角度量(step)
+float AttitudePlanner::calculate_step(float current_angle, float target_angle, float update_frequency, float transition_time)
+{
+    float delta         = target_angle - current_angle;
+    float total_updates = update_frequency * transition_time;
+    return delta / total_updates;
 }

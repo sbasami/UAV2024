@@ -40,6 +40,12 @@ class AttitudePlanner
 
     std::vector<float> refRPY_deg_     = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢[deg] */
     std::vector<float> ref_offset_deg_ = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢のオフセット値[deg] */
+
+    float step_ = 0;
+
+    float calculate_step(float current_angle, float target_angle, float update_frequency, float transition_time);
+    float update_angle(float current_angle_deg, float target_angle_deg, float step);
+
    public:
     AttitudePlanner();
     void               calculateRefAttitude(T6L_Command command, std::vector<float> cur_rpy_deg);
