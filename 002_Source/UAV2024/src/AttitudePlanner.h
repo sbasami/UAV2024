@@ -41,13 +41,19 @@ class AttitudePlanner
     std::vector<float> refRPY_deg_     = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢[deg] */
     std::vector<float> ref_offset_deg_ = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢のオフセット値[deg] */
 
-    float step_ = 0;
+    float tilt_flight_target_angle_deg_    = 30.0f;   /**< チルト角度[deg] */
+    float tilt_flight_update_frequency_Hz_ = 1000.0f; /**< 更新周波数[Hz] */
+    float tilt_flight_transition_time_s_   = 5.0f;    /**< 遷移時間[s] */
+    float tilt_flight_angle_step_deg_      = 0.0f;    /**< 角度量[deg] */
 
-    float calculate_step(float current_angle, float target_angle, float update_frequency, float transition_time);
-    float update_angle(float current_angle_deg, float target_angle_deg, float step);
+    float calculateTiltFlightAngleStep(float current_angle, float target_angle, float update_frequency, float transition_time);
+    float updateTiltFlightReferenceAngle(float current_angle_deg, float target_angle_deg, float angle_step_deg);
 
    public:
     AttitudePlanner();
+    void               SetTiltFlightTargetAngle(float tilt_flight_target_angle_deg);
+    void               SetTiltFlightUpdateFrequency(float tilt_flight_update_frequency_Hz);
+    void               SetTiltFlightTransitionTime(float tilt_flight_transition_time_s);
     void               calculateRefAttitude(T6L_Command command, std::vector<float> cur_rpy_deg);
     std::vector<float> getRefRPY_rad();
     std::vector<float> getRefRPY_deg();

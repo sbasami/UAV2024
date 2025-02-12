@@ -34,7 +34,13 @@ std::vector<float> ref_servo(4);   // サーボの目標角度
  */
 void drone_Init()
 {
+    // 姿勢センサの初期化
     attitudeSensor.begin(CONFIG_CONTROL_FREQUENCY_Hz);
+
+    // チルト飛行の設定
+    attitudePlanner.SetTiltFlightTargetAngle(30);
+    attitudePlanner.SetTiltFlightUpdateFrequency(CONFIG_CONTROL_FREQUENCY_Hz);
+    attitudePlanner.SetTiltFlightTransitionTime(5);
 }
 
 /**

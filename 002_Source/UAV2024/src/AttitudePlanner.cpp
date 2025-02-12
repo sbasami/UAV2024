@@ -11,7 +11,34 @@
  */
 AttitudePlanner::AttitudePlanner()
 {
-    step_ = calculate_step(0, 30, 1000, 5);
+    /* do nothing */
+}
+
+/**
+ * @brief チルト飛行の目標角度[deg]設定処理
+ * @param [in] tilt_flight_target_angle_deg 目標角度[deg]
+ */
+void AttitudePlanner::SetTiltFlightTargetAngle(float tilt_flight_target_angle_deg)
+{
+    tilt_flight_target_angle_deg_ = tilt_flight_target_angle_deg;
+}
+
+/**
+ * @brief チルト飛行の更新周波数[Hz]設定処理
+ * @param [in] tilt_flight_update_frequency_Hz 更新周波数[Hz]
+ */
+void AttitudePlanner::SetTiltFlightUpdateFrequency(float tilt_flight_update_frequency_Hz)
+{
+    tilt_flight_update_frequency_Hz_ = tilt_flight_update_frequency_Hz;
+}
+
+/**
+ * @brief チルト飛行の遷移時間[s]設定処理
+ * @param [in] tilt_flight_transition_time_s 遷移時間[s]
+ */
+void AttitudePlanner::SetTiltFlightTransitionTime(float tilt_flight_transition_time_s)
+{
+    tilt_flight_transition_time_s_ = tilt_flight_transition_time_s;
 }
 
 /**
@@ -37,14 +64,18 @@ void AttitudePlanner::calculateRefAttitude(T6L_Command command, std::vector<floa
     // プロポの信号をYAW_ADD_MIN     ~ YAW_ADD_MAXの範囲で正規化
     ref_yaw = command.rudder * (YAW_ADD_MAX - YAW_ADD_MIN) + YAW_ADD_MIN;
 
+    // チルト飛行のための目標roll姿勢を計算
+    tilt_flight_angle_step_deg_ = calculateTiltFlightAngleStep(ref_offset_deg_[0], tilt_flight_target_angle_deg_, tilt_flight_update_frequency_Hz_, tilt_flight_transition_time_s_);
     // スイッチが閾値を超えていた場合はチルト飛行のために目標roll姿勢を更新
     if (command.sw > SWITCH_THRESHOLD)
     {
-        ref_roll = update_angle(refRPY_deg_[0], 30, step_);
+        // チルト飛行
+        ref_roll = updateTiltFlightReferenceAngle(refRPY_deg_[0], tilt_flight_target_angle_deg_, tilt_flight_angle_step_deg_);
     }
     else
     {
-        ref_roll = update_angle(refRPY_deg_[0], ref_offset_deg_[0], step_);
+        // 水平飛行
+        ref_roll = updateTiltFlightReferenceAngle(refRPY_deg_[0], ref_offset_deg_[0], tilt_flight_angle_step_deg_);
     }
 
     // プロポから送信される値はAD値なので操作していなくても値が僅かにブレて意図せず加算される可能性がある
@@ -63,6 +94,7 @@ void AttitudePlanner::calculateRefAttitude(T6L_Command command, std::vector<floa
     {
         // do nothing
     }
+
     // メンバ変数に値を代入
     refRPY_deg_[0] = ref_roll;
     refRPY_deg_[1] = ref_pitch;
@@ -141,14 +173,17 @@ Eigen::Matrix3f AttitudePlanner::getRefRotMatrixWithoutOffset()
     return R;
 }
 
-// 角度を目標に向けてランプ状に更新する関数
-// 引数:
-//  current_angle_deg: 現在の角度
-//  target_angle_deg : 目標とする角度
-//  step         : 1周期で変化させる角度量
-// 戻り値:
-//  更新後の角度
-float AttitudePlanner::update_angle(float current_angle_deg, float target_angle_deg, float step)
+/* ====================================================================
+ * Private functions
+ * ==================================================================== */
+/**
+ * @brief 角度を目標に向けてランプ状に更新する関数
+ * @param [in] current_angle_deg 現在の角度
+ * @param [in] target_angle_deg 目標とする角度
+ * @param [in] angle_step_deg 1周期で変化させる角度量
+ * @return 更新後の角度
+ */
+float AttitudePlanner::updateTiltFlightReferenceAngle(float current_angle_deg, float target_angle_deg, float angle_step_deg)
 {
     float diff = target_angle_deg - current_angle_deg;
 
@@ -156,7 +191,7 @@ float AttitudePlanner::update_angle(float current_angle_deg, float target_angle_
     if (diff > 0)
     {
         // 現在角度が目標より小さいので増加させる
-        current_angle_deg += step;
+        current_angle_deg += angle_step_deg;
         // 超えた場合は補正
         if (current_angle_deg > target_angle_deg)
         {
@@ -166,7 +201,7 @@ float AttitudePlanner::update_angle(float current_angle_deg, float target_angle_
     else
     {
         // 現在角度が目標より大きいので減少させる
-        current_angle_deg -= step;
+        current_angle_deg -= angle_step_deg;
         // 下回った場合は補正
         if (current_angle_deg < target_angle_deg)
         {
@@ -177,17 +212,22 @@ float AttitudePlanner::update_angle(float current_angle_deg, float target_angle_
     return current_angle_deg;
 }
 
-// stepを決定する関数
-// 引数：
-//   current_angle: 現在角度
-//   target_angle : 目標角度
-//   update_frequency: 1秒あたりの更新回数(Hz)
-//   transition_time : 遷移時間(秒)
-// 戻り値：
-//   1回の更新あたりに変化させる角度量(step)
-float AttitudePlanner::calculate_step(float current_angle, float target_angle, float update_frequency, float transition_time)
+/**
+ * @brief チルト飛行のための角度量を計算する関数
+ * @param [in] current_angle_deg 現在の角度[deg]
+ * @param [in] target_angle_deg 目標の角度[deg]
+ * @param [in] update_frequency_Hz 更新周波数[Hz]
+ * @param [in] transition_time_s 遷移時間[s]
+ * @return 1回の更新あたりに変化させる角度量[deg]
+ */
+float AttitudePlanner::calculateTiltFlightAngleStep(float current_angle_deg, float target_angle_deg, float update_frequency_Hz, float transition_time_s)
 {
-    float delta         = target_angle - current_angle;
-    float total_updates = update_frequency * transition_time;
-    return delta / total_updates;
+    float angle_step_deg = 0.0f;
+
+    // 目標角度と現在角度の差を計算
+    float delta = target_angle_deg - current_angle_deg;
+    // 1秒あたりの更新回数から1回の更新あたりの角度量を計算
+    angle_step_deg = delta / (update_frequency_Hz * transition_time_s);
+
+    return angle_step_deg;
 }
