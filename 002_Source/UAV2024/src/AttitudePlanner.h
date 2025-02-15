@@ -41,10 +41,10 @@ class AttitudePlanner
     std::vector<float> refRPY_deg_     = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢[deg] */
     std::vector<float> ref_offset_deg_ = {0.0f, 0.0f, 0.0f}; /**< 目標姿勢のオフセット値[deg] */
 
-    float tilt_flight_target_angle_deg_    = 30.0f;   /**< チルト角度[deg] */
-    float tilt_flight_update_frequency_Hz_ = 1000.0f; /**< 更新周波数[Hz] */
-    float tilt_flight_transition_time_s_   = 5.0f;    /**< 遷移時間[s] */
-    float tilt_flight_angle_step_deg_      = 0.0f;    /**< 角度量[deg] */
+    float tilt_flight_target_angle_deg_    = 30.0f;   /**< チルト飛行の目標角度[deg] */
+    float tilt_flight_update_frequency_Hz_ = 1000.0f; /**< チルト飛行の更新周波数[Hz] */
+    float tilt_flight_transition_time_s_   = 5.0f;    /**< チルト飛行の遷移時間[s] */
+    float tilt_flight_angle_step_deg_      = 0.0f;    /**< チルト飛行の角度量[deg] */
 
     float calculateTiltFlightAngleStep(float current_angle, float target_angle, float update_frequency, float transition_time);
     float updateTiltFlightReferenceAngle(float current_angle_deg, float target_angle_deg, float angle_step_deg);

@@ -23,6 +23,9 @@ static PositionController positionController(CONFIG_POSITION_CONTROL_PERIOD_sec)
 // 機体の操作量の分配に関するクラス
 static Distributor distributor;
 
+/* ====================================================================
+ * Variables
+ * ==================================================================== */
 std::vector<float> ref_thrust(4);  // プロペラの目標推力
 std::vector<float> ref_servo(4);   // サーボの目標角度
 
@@ -102,11 +105,19 @@ void drone_Control(T6L_Command command)
     // Serial.print("\t");
 }
 
+/**
+ * @brief プロペラの目標推力取得処理
+ * @return プロペラの目標推力
+ */
 std::vector<float> drone_getThrust()
 {
     return ref_thrust;
 }
 
+/**
+ * @brief サーボの目標角度取得処理
+ * @return サーボの目標角度
+ */
 std::vector<float> drone_getServoAngle()
 {
     return ref_servo;
